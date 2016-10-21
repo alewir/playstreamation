@@ -1,0 +1,99 @@
+h1, .param_group {
+    color: yellow;
+}
+
+.error_msg {
+    color: pink;
+}
+
+.error_msg_c {
+    color: red;
+    background: lightgray;
+}
+
+body {
+    color: white;
+    background: blue url("images/background.jpg");
+}
+
+table {
+    border: 1px solid lightblue;
+    width: 1000px;
+    table-layout: fixed;
+    background: green url("images/background.jpg");
+    word-wrap: break-word;
+}
+
+th {
+    background-color: #336699;
+}
+
+.col_name {
+    width: 6%;
+}
+
+.col_ip {
+    width: 13%;
+}
+
+.col_port {
+    width: 6%;
+}
+
+.col_stream_m {
+    width: 4%;
+}
+
+.col_stream_s {
+    width: 4%;
+}
+
+.col_user {
+    width: 13%;
+}
+
+.col_pass {
+    width: 13%;
+}
+
+.col_type {
+    width: 13%;
+}
+
+.col_err {
+    width: 24%;
+}
+
+input {
+    width: 120px;
+    align: center;
+    text-align: center;
+    margin-left: 5px;
+}
+
+select {
+    width: 130px;
+    text-align: center;
+}
+
+#current_cam_stream_m1,
+#current_cam_stream_m2,
+#current_cam_stream_m3,
+#current_cam_stream_m4,
+#current_cam_stream_s1,
+#current_cam_stream_s2,
+#current_cam_stream_s3,
+#current_cam_stream_s4 {
+    width: 30px;
+}
+
+input:disabled {
+    background: darkgray;
+}
+
+input[name='new_cam_port1'],
+input[name='new_cam_port2'],
+input[name='new_cam_port3'],
+input[name='new_cam_port4'] {
+    width: 50px;
+}

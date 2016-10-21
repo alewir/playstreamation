@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+export PS_HOME=/home/haso/camviewer
+
+cd "$PS_HOME"
+startx ./camviewer.py
+
+exit 0

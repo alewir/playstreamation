@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+export PS_HOME=/home/haso/camviewer
+
+cd "$PS_HOME"
+bash cfgviewer.sh
+
+exit 0
+

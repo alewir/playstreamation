@@ -1,0 +1,217 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'cfgpanel/style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="style.css"/>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Konfiguracja MG-1</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <script type="text/javascript">
+
+    function checkOption(selectId, inputId1, inputId2) {
+        var selectObj = document.getElementById(selectId);
+        var inputObj1 = document.getElementById(inputId1);
+        var inputObj2 = document.getElementById(inputId2);
+
+        if (selectObj.value == "haso") {
+            inputObj1.disabled = true;
+            inputObj2.disabled = true;
+            inputObj1.value = '0';
+            inputObj2.value = '1';
+        } else {
+            inputObj1.disabled = false;
+            inputObj2.disabled = false;
+            inputObj1.value = '';
+            inputObj2.value = '';
+        }
+    }
+
+    function init() {
+        checkOption('new_cam_type1', 'current_cam_stream_m1', 'current_cam_stream_s1');
+        checkOption('new_cam_type2', 'current_cam_stream_m2', 'current_cam_stream_s2');
+        checkOption('new_cam_type3', 'current_cam_stream_m3', 'current_cam_stream_s3');
+        checkOption('new_cam_type4', 'current_cam_stream_m4', 'current_cam_stream_s4');
+    }
+
+    </script>
+
+</head>
+<body onload="init();">
+
+<h1>Ustawienia monitora górniczego MG-1</h1>
+
+<form action="{% url 'config:index' %}" method="post">{% csrf_token %}
+    <table>
+        <colgroup>
+            <col class="col_name">
+            <col class="col_ip">
+            <col class="col_port">
+            <col class="col_stream_m">
+            <col class="col_stream_s">
+            <col class="col_user">
+            <col class="col_pass">
+            <col class="col_type">
+            <col class="col_err">
+        </colgroup>
+        <tbody>
+        <tr>
+            <td colspan="9">
+                <h3 class="param_group">Konfiguracja monitora</h3></td>
+        </tr>
+        <tr>
+            <td class="param_name">Adres IP</td>
+            <td><input name="new_mon_address" value="{{ current_mon_address }}"/></td>
+            <td colspan="7" class="error_msg">{{ info_mon_address }}</td>
+        </tr>
+        <tr>
+            <td class="param_name">Maska</td>
+            <td><input name="new_mon_netmask" value="{{ current_mon_netmask }}"/></td>
+            <td colspan="7" class="error_msg">{{ info_mon_netmask }}</td>
+        </tr>
+        <tr>
+            <td colspan="9"><br/>
+                <h3 class="param_group">Konfiguracja oczekiwanych adresów kamer</h3></td>
+        </tr>
+        <tr>
+            <th>Urz.</th>
+            <th>IP</th>
+            <th>Port</th>
+            <th>HD</th>
+            <th>4w1</th>
+            <th>Użytkownik</th>
+            <th>Hasło</th>
+            <th>Typ</th>
+            <th>Info.</th>
+        </tr>
+        <tr>
+            <td class="param_name"><span>Kam.&nbsp;1:<br /></span></td>
+            <td class="param_ip"><input name="new_cam_address1" value="{{ current_cam_address1 }}"/></td>
+            <td class="param_port"><input name="new_cam_port1" value="{{ current_cam_port1 }}"/></td>
+            <td class="param_stream"><input name="new_cam_stream_m1" value="{{ current_cam_stream_m1 }}" id="current_cam_stream_m1"/></td>
+            <td class="param_stream"><input name="new_cam_stream_s1" value="{{ current_cam_stream_s1 }}" id="current_cam_stream_s1"/></td>
+            <td class="param_user"><input name="new_cam_user1" value="{{ current_cam_user1 }}"/></td>
+            <td class="param_pass"><input name="new_cam_pass1" value="{{ current_cam_pass1 }}" type="password"/></td>
+            <td class="param_type">
+                <select name="new_cam_type1" id="new_cam_type1" onChange="checkOption(this.id, 'current_cam_stream_m1', 'current_cam_stream_s1');">
+                    {% ifequal current_cam_type1 'haso' %}
+                    <option value="haso" selected="selected">HASO KG-1</option>
+                    {% else %}
+                    <option value="haso">HASO KG-1</option>
+                    {% endifequal %}
+                    {% ifequal current_cam_type1 'samsung' %}
+                    <option value="samsung" selected="selected">Samsung SNZ-5200</option>
+                    {% else %}
+                    <option value="samsung">Samsung SNZ-5200</option>
+                    {% endifequal %}
+                </select>
+            </td>
+            <td class="error_msg_c">{{ info_cam_data1 }}</td>
+        </tr>
+        <tr>
+            <td class="param_name"><span>Kam.&nbsp;2:&nbsp;</span></td>
+            <td class="param_ip"><input name="new_cam_address2" value="{{ current_cam_address2 }}"/></td>
+            <td class="param_port"><input name="new_cam_port2" value="{{ current_cam_port2 }}"/></td>
+            <td class="param_stream"><input name="new_cam_stream_m2" value="{{ current_cam_stream_m2 }}" id="current_cam_stream_m2"/></td>
+            <td class="param_stream"><input name="new_cam_stream_s2" value="{{ current_cam_stream_s2 }}" id="current_cam_stream_s2"/></td>
+            <td class="param_user"><input name="new_cam_user2" value="{{ current_cam_user2 }}"/></td>
+            <td class="param_pass"><input name="new_cam_pass2" value="{{ current_cam_pass2 }}" type="password"/></td>
+            <td class="param_type">
+                <select name="new_cam_type2" id="new_cam_type2" onChange="checkOption(this.id, 'current_cam_stream_m2', 'current_cam_stream_s2');">
+                    {% ifequal current_cam_type2 'haso' %}
+                    <option value="haso" selected="selected">HASO KG-1</option>
+                    {% else %}
+                    <option value="haso">HASO KG-1</option>
+                    {% endifequal %}
+                    {% ifequal current_cam_type2 'samsung' %}
+                    <option value="samsung" selected="selected">Samsung SNZ-5200</option>
+                    {% else %}
+                    <option value="samsung">Samsung SNZ-5200</option>
+                    {% endifequal %}
+                </select>
+            </td>
+            <td class="error_msg_c">{{ info_cam_data2 }}</td>
+        </tr>
+        <tr>
+            <td class="param_name"><span>Kam.&nbsp;3:&nbsp;</span></td>
+            <td class="param_ip"><input name="new_cam_address3" value="{{ current_cam_address3 }}"/></td>
+            <td class="param_port"><input name="new_cam_port3" value="{{ current_cam_port3 }}"/></td>
+            <td class="param_stream"><input name="new_cam_stream_m3" value="{{ current_cam_stream_m3 }}" id="current_cam_stream_m3"/></td>
+            <td class="param_stream"><input name="new_cam_stream_s3" value="{{ current_cam_stream_s3 }}" id="current_cam_stream_s3"/></td>
+            <td class="param_user"><input name="new_cam_user3" value="{{ current_cam_user3 }}"/></td>
+            <td class="param_pass"><input name="new_cam_pass3" value="{{ current_cam_pass3 }}" type="password"/></td>
+            <td class="param_type">
+                <select name="new_cam_type3" id="new_cam_type3" onChange="checkOption(this.id, 'current_cam_stream_m3', 'current_cam_stream_s3');">
+                    {% ifequal current_cam_type3 'haso' %}
+                    <option value="haso" selected="selected">HASO KG-1</option>
+                    {% else %}
+                    <option value="haso">HASO KG-1</option>
+                    {% endifequal %}
+                    {% ifequal current_cam_type3 'samsung' %}
+                    <option value="samsung" selected="selected">Samsung SNZ-5200</option>
+                    {% else %}
+                    <option value="samsung">Samsung SNZ-5200</option>
+                    {% endifequal %}
+                </select>
+            </td>
+            <td class="error_msg_c">{{ info_cam_data3 }}</td>
+        </tr>
+        <tr>
+            <td class="param_name"><span>Kam.&nbsp;4:&nbsp;</span></td>
+            <td class="param_ip"><input name="new_cam_address4" value="{{ current_cam_address4 }}"/></td>
+            <td class="param_port"><input name="new_cam_port4" value="{{ current_cam_port4 }}"/></td>
+            <td class="param_stream"><input name="new_cam_stream_m4" value="{{ current_cam_stream_m4 }}" id="current_cam_stream_m4"/></td>
+            <td class="param_stream"><input name="new_cam_stream_s4" value="{{ current_cam_stream_s4 }}" id="current_cam_stream_s4"/></td>
+            <td class="param_user"><input name="new_cam_user4" value="{{ current_cam_user4 }}"/></td>
+            <td class="param_pass"><input name="new_cam_pass4" value="{{ current_cam_pass4 }}" type="password"/></td>
+            <td class="param_type">
+                <select name="new_cam_type4" id="new_cam_type4" onChange="checkOption(this.id, 'current_cam_stream_m4', 'current_cam_stream_s4');">
+                    {% ifequal current_cam_type4 'haso' %}
+                    <option value="haso" selected="selected">HASO KG-1</option>
+                    {% else %}
+                    <option value="haso">HASO KG-1</option>
+                    {% endifequal %}
+                    {% ifequal current_cam_type4 'samsung' %}
+                    <option value="samsung" selected="selected">Samsung SNZ-5200</option>
+                    {% else %}
+                    <option value="samsung">Samsung SNZ-5200</option>
+                    {% endifequal %}
+                </select>
+            </td>
+            <td class="error_msg_c">{{ info_cam_data4 }}</td>
+        </tr>
+        <tr>
+            <td colspan="9">
+                UWAGA: Adresy IP kamer muszą znajdować się w tej samej przestrzeni adresowej IPv4, co adres IP monitora.
+            </td>
+        </tr>
+        <tr>
+            <td colspan="9"><br/>
+                <h3 class="param_group">Numer seryjny&nbsp;</h3></td>
+        </tr>
+        <tr>
+            <td class="param_name"><span>Wartość&nbsp;</span></td>
+            <td colspan="7">{{ current_serial_number }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br/>
+    <br/>
+    <input name="btn_submit" type="submit" value="Zapisz"/>
+</form>
+
+{% if op_status != "" %}
+<div>
+    <br/>
+    <h3 class="error_msg">Status operacji</h3>
+    <p class="error_msg">{{ op_status }}</p>
+</div>
+{% endif %}
+
+</body>
+</html>

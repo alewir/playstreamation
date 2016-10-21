@@ -1,0 +1,57 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'cfgpanel/style.css' %}"/>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Konfiguracja MG-1</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+</head>
+<body>
+
+<h1>
+    Menu serwisowe monitora
+    <br/>
+</h1>
+
+<form action="{% url 'config:index' %}" method="post">{% csrf_token %}
+    <table>
+        <col width="130px"/>
+        <tr>
+            <td class="param_name">Adres&nbsp;MAC&nbsp;</td>
+            <td><label>{{ mac_address }}</label></td>
+        </tr>
+
+        <tr> <td>&nbsp;</td> </tr>
+
+        <tr>
+            <td colspan="3">
+                <h3 class="param_group">Nowy numer seryjny</h3></td>
+        </tr>
+        <tr>
+            <td class="param_name">Wartość&nbsp;</td>
+            <td><input name="new_serial_number" value="{{ new_serial_number }}"/></td>
+        </tr>
+
+        <tr>
+            <td colspan="3"><br/>
+                <h3 class="param_group">Autoryzacja</h3></td>
+        </tr>
+        <tr>
+            <td class="param_name"><span>Hasło serwisowe&nbsp;</span></td>
+            <td><input name="admin_password" value="{{ admin_password }}" type="password"/></td>
+        </tr>
+    </table>
+
+    <br/>
+    <br/>
+    <input name="btn_submit" type="submit" value="Zapisz"/>
+</form>
+
+</body>
+</html>

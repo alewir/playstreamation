@@ -1,0 +1,82 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'cfgpanel/style.css' %}"/>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Konfiguracja MG-1</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+</head>
+<body>
+
+<h1>
+    Monitor jest restartowany. Proszę czekać...
+    <br/>
+    Pozostało: <span id="timer">--</span>
+</h1>
+
+<p>
+    UWAGA: Jeśli strona konfiguracji nie otworzy się w ciągu około 30 sekund, należy odświeżyć przeglądarkę (klawisz F5).
+</p>
+
+<script>
+var count=30;
+
+var counter=setInterval(timer, 1000); // 1000 will  run it every 1 second
+
+function timer()
+{
+  count=count-1;
+  if (count <= 0)
+  {
+     clearInterval(counter);
+     return;
+  }
+
+  document.getElementById("timer").innerHTML=count + " sekund";
+}
+
+
+
+
+</script>
+
+<!--reboot only-->
+{% if redirect_address == "" %}
+<div>
+    <p>Trwa odświeżanie strony: {{ current_mon_address }}:8080/config</p>
+    <script>
+    window.setTimeout(function() {
+        window.location.replace(window.location.href)
+    }, 30000);
+
+
+
+    </script>
+</div>
+{% endif %}
+
+<!--reboot & redirect-->
+{% if redirect_address != "" %}
+<div>
+    <p>Trwa przekierowywanie do adresu: {{ redirect_address }}:8080/config</p>
+    <script>
+    window.setTimeout(function() {
+        var new_url = "http://{{ redirect_address }}:8080/config";
+        window.location.replace(new_url)
+    }, 30000);
+
+
+
+
+    </script>
+</div>
+{% endif %}
+
+</body>
+</html>
