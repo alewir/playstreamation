@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
 
-# using version: 1.9.4
-sudo pip install django
-# using version: 0.0.4
-sudo pip install pyping
-# using version: 2.1.2
-sudo pip install fysom
-
 sudo apt-get update
 
+sudo apt-get install python-dev python-pip
 sudo apt-get install subversion
 sudo apt-get install daemontools daemontools-run
 sudo apt-get install python-imaging-tk
+
+# tested with version: 1.9.4
+sudo pip install django
+# tested with version: 0.0.4
+sudo pip install pyping
+# tested with version: 2.1.2
+sudo pip install fysom
+# tested with version: 15.2.0
+sudo pip install pyzmq
 
 export PS_USER=haso
 export REPO_URL=svn co https://github.com/alewir/playstreamation.git/trunk/ .
