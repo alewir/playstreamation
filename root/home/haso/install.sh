@@ -8,7 +8,10 @@ sudo pip install pyping
 sudo pip install fysom
 
 sudo apt-get update
+
 sudo apt-get install subversion
+sudo apt-get install daemontools daemontools-run
+sudo apt-get install python-imaging-tk
 
 export PS_USER=haso
 export REPO_URL=svn co https://github.com/alewir/playstreamation.git/trunk/ .
