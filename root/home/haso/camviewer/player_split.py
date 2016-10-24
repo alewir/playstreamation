@@ -75,11 +75,11 @@ class PlayerSplit:
                 ps_filtered = subprocess.Popen(['grep', '[c]amera%d' % cam_no], stdin=ps_full_list.stdout, stdout=subprocess.PIPE)
                 ps_filtered.wait()
 
-                camera_count = subprocess.check_output(['wc', '-l'], stdin=ps_filtered.stdout)
-                log.info(" -- camera[%d] related process check [%d] count = %s." % (cam_no, self.check_counter[i], camera_count.rstrip('\n')))
+                related_processes_amnt = subprocess.check_output(['wc', '-l'], stdin=ps_filtered.stdout)
+                log.info(" -- camera[%d] related process check [%d] processes found = %s." % (cam_no, self.check_counter[i], related_processes_amnt.rstrip('\n')))
                 self.check_counter[i] += 1
 
-                if camera_count is not None and int(camera_count) != 1 and self.auto_restart_enabled:
+                if related_processes_amnt is not None and int(related_processes_amnt) != 1 and self.auto_restart_enabled:
                     log.info(' --- Player[split-%d] requires restart.' % i)
                     requiring_restart.append(i)
                 elif self.check_counter[i] % 1800 == 0:  # every 1800 checks. (every 1h) restart stream even if it is still running (workaround for image freezing after w while)

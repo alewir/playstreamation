@@ -4,6 +4,8 @@
 sudo pip install django
 # using version: 0.0.4
 sudo pip install pyping
+# using version: 2.1.2
+sudo pip install fysom
 
 sudo apt-get update
 sudo apt-get install subversion
