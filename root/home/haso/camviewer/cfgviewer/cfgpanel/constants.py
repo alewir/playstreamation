@@ -37,19 +37,19 @@ CFG_CAM_IP_FILENAME = "config_cam.cfg"
 CFG_MON_IP_FILENAME = "config_mon.cfg"
 CFG_SERIAL_FILENAME = "config_serial.cfg"
 
-DEFAULT_SERIAL = "nie zdefiniowano"
+DEFAULT_SERIAL = "not defined"
 DEFAULT_VERSION = 'X.X'
 
-MON_ADDRESS_NOT_CONFIGURED = "nie skonfigurowano"
-MON_NETMASK_NOT_CONFIGURED = "nie skonfigurowano"
+MON_ADDRESS_NOT_CONFIGURED = "not configured"
+MON_NETMASK_NOT_CONFIGURED = "not configured"
 
 EMPTY_CONFIG_CONTENT = '||||||\n||||||\n||||||\n||||||\n'
 
 CFG_PATH = '../'
 ADMIN_PASS = 'secret'
 
-ERR_MSG_DETAILS = u'%s - nieprawidłowa wartość (%s) - wymagany format to: %s'
-ERR_MSG_VALIDATION = u'Wystąpiły błędy walidacji. Nowe wartości konfiguracyjne nie zostały zapisane.'
+ERR_MSG_DETAILS = u'%s - invalid value (%s) - required format is: %s'
+ERR_MSG_VALIDATION = u'There were validation errors. New configuration values were not saved.'
 
 REGEX_IP_FORMAT = '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'
 REQUIRED_FORMAT_IP_ADDRESS = '<0-255>.<0-255>.<0-255>.<0-255>'
@@ -58,9 +58,9 @@ REGEX_IP_ADDRESS = r'%s' % REGEX_IP_FORMAT
 REGEX_MON_ADDRESS = r'%s%s' % (KEYWORD_ADDRESS, REGEX_IP_FORMAT)
 REGEX_MON_NETMASK = r'%s%s' % (KEYWORD_NETMASK, REGEX_IP_FORMAT)
 
-CAM_STATUS_INIT = 'inicjalizacja...'  # Default value
+CAM_STATUS_INIT = 'initialization...'  # Default value
 CAM_STATUS_UNDEFINED = ''  # used when address IP is not defined for camera
 CAM_STATUS_OK = '(OK)'
-CAM_STATUS_NOT_CONNECTED = '(brak połączenia)'
-CAM_STATUS_CON_ERROR = '(problem z połączeniem)'
+CAM_STATUS_NOT_CONNECTED = '(no connection)'
+CAM_STATUS_CON_ERROR = '(connection error)'
 
