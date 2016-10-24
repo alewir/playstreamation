@@ -46,7 +46,7 @@ MON_NETMASK_NOT_CONFIGURED = "nie skonfigurowano"
 EMPTY_CONFIG_CONTENT = '||||||\n||||||\n||||||\n||||||\n'
 
 CFG_PATH = '../'
-ADMIN_PASS = 'haso25L'
+ADMIN_PASS = 'secret'
 
 ERR_MSG_DETAILS = u'%s - nieprawidłowa wartość (%s) - wymagany format to: %s'
 ERR_MSG_VALIDATION = u'Wystąpiły błędy walidacji. Nowe wartości konfiguracyjne nie zostały zapisane.'
