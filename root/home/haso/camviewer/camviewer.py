@@ -282,7 +282,7 @@ class Camviewer:
         cams_configs = self._info_collector_thread.cams_configs
 
         self._player_split = PlayerSplit(cams_configs, WIN_ARR)
-        self._player_split.play(self._info_collector_thread.cams_statuses)
+        self._player_split.play()
 
         if self._cam_stop_user_request:
             log.info("Player[split] stopped manually. Done.")

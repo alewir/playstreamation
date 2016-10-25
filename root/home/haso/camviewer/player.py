@@ -31,7 +31,7 @@ class Player:
                    '--blank',
                    '--live' if self.live else '--no-osd',
                    '--aspect-mode', 'fill',
-                   '--avdict', 'rtsp_transport:tcp'
+                   '--avdict', 'rtsp_transport:tcp',
                    '--subtitles', '/home/haso/camviewer/sub%d.srt' % self.id,
                    self.uri]
         log.info('Starting Player[single]... (%s)' % repr(command))

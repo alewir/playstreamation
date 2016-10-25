@@ -8,6 +8,4 @@ sudo svc -d /service/cfgviewer/
 echo "Killing apps..."
 sleep 3
 
-source ./killapps.sh
-
-
+source kill_running_apps.sh

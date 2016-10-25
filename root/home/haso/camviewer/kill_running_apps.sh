@@ -1,15 +1,5 @@
 #!/usr/bin/env bash
 
-PID=`ps -ef | grep "[o]mxplayer.bin" | awk '{print $2}'`
-if [ -n "$PID" ] ; then
-    echo "Closing OMXplayer..."
-    sudo python dbus_omxplayer.py
-else
-    echo "OMXplayer not running."
-fi
-
-source stop4.sh
-
 PID=`ps -ef | grep "python [b]uttons.py" | awk '{print $2}'`
 if [ -n "$PID" ] ; then
     echo "Closing GPIO-Buttons driver..."
@@ -33,5 +23,15 @@ if [ -n "$PID" ] ; then
 else
     echo "CAMviewer not running."
 fi
+
+PID=`ps -ef | grep "[o]mxplayer.bin" | awk '{print $2}'`
+if [ -n "$PID" ] ; then
+    echo "Closing OMXplayer..."
+    sudo python dbus_omxplayer.py
+else
+    echo "OMXplayer not running."
+fi
+
+./omx_kill_all.sh
 
 # NOTE: watchdog.py process <= should not be killed (WDT will fire)
