@@ -1,6 +1,6 @@
 {
   "name": "Playstreamation",
-  "tagline": "Configuration and playback/management system for up to 4 streams (RTSP, e.g. from IP cameras). Using popcornmix/omxplayer. Applicable for Raspbian.",
+  "tagline": "A monitor software for up to 4 IP cameras for Raspberry Pi",
   "body": "# playstreamation\r\n\r\nConfiguration and playback/management system for up to 4 streams (RTSP, e.g. from IP cameras). Using popcornmix/omxplayer. Applicable for Raspbian and Raspberry Pi (tested on version 3).\r\n\r\nFor more details check wiki page: https://github.com/alewir/playstreamation/wiki\r\n\r\nContact information: sir.alwi@gmail.com\r\n",
   "note": "Don't delete this file! It's used internally to help with page regeneration."
 }
