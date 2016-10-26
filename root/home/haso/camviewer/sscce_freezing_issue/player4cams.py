@@ -134,7 +134,7 @@ def kill_all_omx_processes():
 def main_for_testing():
     cam_streams = [
         "",
-        "",
+        "rtsp://mpv.cdn3.bigCDN.com:554/bigCDN/mp4:bigbuckbunnyiphone_400.mp4",
         "rtsp://172.16.1.195:554/av0_1",
         "rtsp://mpv.cdn3.bigCDN.com:554/bigCDN/definst/mp4:bigbuckbunnyiphone_400.mp4"
     ]
