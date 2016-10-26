@@ -93,12 +93,7 @@ class Playstreamation:
         log.info(' - Player[stream-%d] - omx command: (%s).' % (i, cmd))
 
         script_path = './start%d.sh' % i
-        f = open(script_path, 'w+')
-        f.write(BASH_SHEBANG)
-        f.write(cmd + '\n')
-        f.truncate()
-        f.close()
-        log.info(' - Player[stream-%d] - start script prepared: (%s).' % (i, script_path))
+        store_as_script_on_disk(i, cmd, script_path)
 
         # prepare starting commands for current script
         screen_name = 'camera%d' % (i + 1)
@@ -114,6 +109,15 @@ class Playstreamation:
 
     def disable_auto_restart(self):
         self.auto_restart_enabled = False
+
+
+def store_as_script_on_disk(i, content, script_path):
+    f = open(script_path, 'w+')
+    f.write(BASH_SHEBANG)
+    f.write(content + '\n')
+    f.truncate()
+    f.close()
+    log.info(' - Player[stream-%d] - start script stored on disk: (%s).' % (i, script_path))
 
 
 def kill_single_omx_window(i, win_coords_filter):
