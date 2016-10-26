@@ -6,6 +6,7 @@ sudo apt-get install python-dev python-pip
 sudo apt-get install subversion
 sudo apt-get install daemontools daemontools-run
 sudo apt-get install python-imaging-tk
+sudo apt-get install screen
 
 # tested with version: 1.9.4
 sudo pip install django
