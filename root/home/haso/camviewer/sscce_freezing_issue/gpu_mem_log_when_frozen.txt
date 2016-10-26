@@ -1,4 +1,5 @@
-$ sudo vcdbg reloc
+# players4cams.py working for a longer while and output on screen is frozen - omxplayer not starting new instances anymore
+# $ sudo vcdbg reloc - returns:
 
 Relocatable heap version 4 found at 0x2f000000
 total space allocated is 236M, with 234M relocatable, 2.3M legacy and 0 offline

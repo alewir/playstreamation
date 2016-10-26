@@ -74,7 +74,7 @@ class Playstreamation:
                         # restart stream periodically even if it is still running (workaround for image freezing after w while)
                         log.info(' --- Player[stream-%d] scheduling periodic restart for counter=[%d].' % (stream_id, check_number))
                         kill_single_omx_window(stream_id, win_coords)
-                        self.start_player(stream_id)  # instant start
+                        self.start_player(stream_id)  # instant restart
                     else:
                         pass  # keep playing
 
@@ -109,7 +109,7 @@ class Playstreamation:
         Popen(player_start_command, stdin=PIPE, stdout=DEV_NULL, stderr=STDOUT, close_fds=True, bufsize=0)  # async. execution, instant exit
         self.check_counters[i] = 0
         self.restart_counters[i] += 1
-        log.info('Player[stream-%d] started with command: (%s)' % (i, repr(player_start_command)))
+        log.info(' --- Player[stream-%d] started with command: (%s)' % (i, repr(player_start_command)))
 
     def disable_auto_restart(self):
         self.auto_restart_enabled = False
@@ -127,16 +127,16 @@ def store_as_script_on_disk(i, content, script_path):
 def kill_single_omx_window(i, win_coords_filter):
     screen_name_filter = '[c]amera%d' % (i + 1)
     kill_single_command = ['bash', SCRIPT_OMX_KILL_SINGLE, win_coords_filter, screen_name_filter]
-    log.info(' --- Player[stream-%d] - stopping players for single window, cmd=(%s)' % (i, kill_single_command))
+    log.info(' --- Player[stream-%d] stopping players for single window, cmd=(%s)' % (i, kill_single_command))
     kill_result = check_output(kill_single_command)
     log.info(' --- Player[stream-%d] kill single window result: (%s)', i, kill_result)
 
 
 def kill_all_omx_processes():
     kill_all_command = ['bash', SCRIPT_OMX_KILL_ALL]
-    log.info("Player[split] - stopping players for all windows, cmd=(%s)" % kill_all_command)
+    log.info(" --- Player - stopping players for all windows, cmd=(%s)" % kill_all_command)
     kill_result = check_output(kill_all_command)
-    log.info(' --- Player] kill all windows result: (%s)', kill_result)
+    log.info(' --- Player - kill all windows result: (%s)', kill_result)
 
 
 def main_for_testing():
