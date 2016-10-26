@@ -26,6 +26,7 @@ class Playstreamation:
         self.win_coords = win_coords_array_4
         self.start_commands = []
         self.check_counters = []
+        self.restart_counters = []
 
         self.auto_restart_enabled = True
 
@@ -35,6 +36,7 @@ class Playstreamation:
 
             self.start_commands.append(start_cmd)
             self.check_counters.append(0)
+            self.restart_counters.append(0)
 
             self.start_player(stream_id)
 
@@ -56,7 +58,8 @@ class Playstreamation:
 
                 self.check_counters[stream_id] += 1
                 check_number = self.check_counters[stream_id]
-                log.info(" -- Player[stream-%d] related process check [%d] processes count = %s." % (stream_id, check_number, omx_proc_count.rstrip('\n')))
+                instance_no = self.restart_counters[stream_id]
+                log.info(" -- Player[stream-%d/%d] process check %d processes found=%s" % (stream_id, instance_no, check_number, omx_proc_count.rstrip('\n')))
                 if omx_proc_count is not None and self.auto_restart_enabled:
                     proc_count_int = int(omx_proc_count)
                     if proc_count_int == 0:
@@ -71,7 +74,7 @@ class Playstreamation:
                         # restart stream periodically even if it is still running (workaround for image freezing after w while)
                         log.info(' --- Player[stream-%d] scheduling periodic restart for counter=[%d].' % (stream_id, check_number))
                         kill_single_omx_window(stream_id, win_coords)
-                        self.start_player(stream_id)
+                        self.start_player(stream_id)  # instant start
                     else:
                         pass  # keep playing
 
@@ -105,6 +108,7 @@ class Playstreamation:
         player_start_command = self.start_commands[i]
         Popen(player_start_command, stdin=PIPE, stdout=DEV_NULL, stderr=STDOUT, close_fds=True, bufsize=0)  # async. execution, instant exit
         self.check_counters[i] = 0
+        self.restart_counters[i] += 1
         log.info('Player[stream-%d] started with command: (%s)' % (i, repr(player_start_command)))
 
     def disable_auto_restart(self):
