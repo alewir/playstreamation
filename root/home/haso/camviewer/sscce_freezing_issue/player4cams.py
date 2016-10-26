@@ -140,7 +140,7 @@ def main_for_testing():
         "",
         "rtsp://mpv.cdn3.bigCDN.com:554/bigCDN/mp4:bigbuckbunnyiphone_400.mp4",
         "rtsp://172.16.1.195:554/av0_1",
-        "rtsp://mpv.cdn3.bigCDN.com:554/bigCDN/definst/mp4:bigbuckbunnyiphone_400.mp4"
+        "rtsp://mm2.pcslab.com/mm/7h2000.mp4"
     ]
 
     win_coords = [
