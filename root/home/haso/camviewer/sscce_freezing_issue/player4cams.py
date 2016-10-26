@@ -143,7 +143,7 @@ def main_for_testing():
     cam_streams = [
         "",
         "rtsp://mpv.cdn3.bigCDN.com:554/bigCDN/mp4:bigbuckbunnyiphone_400.mp4",
-        "rtsp://172.16.1.195:554/av0_1",
+        "rtsp://172.16.1.191:554/av0_1",  # some address where there is no stream
         "rtsp://mm2.pcslab.com/mm/7h2000.mp4"
     ]
 
