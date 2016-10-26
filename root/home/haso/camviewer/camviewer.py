@@ -12,7 +12,7 @@ from fysom import Fysom
 import event_handler
 import info_collector
 import info_window
-from cfgviewer.cfgpanel.constants import AUTO_CLOSE_TIME, CYCLE_TIME_DEFAULT, WIN_SINGLE, CFG_CAM_IP_FILENAME, WIN_ARR, CYCLE_TIME_MAX_INCR, EMPTY_CONFIG_CONTENT, CAM_STATUS_OK
+from cfgviewer.cfgpanel.constants import AUTO_CLOSE_TIME, CYCLE_TIME_DEFAULT, WIN_SINGLE, CFG_CAM_IP_FILENAME, CYCLE_TIME_MAX_INCR, EMPTY_CONFIG_CONTENT, CAM_STATUS_OK
 from dbus_omxplayer import send_dbus_stop, OMXPlayerStopError
 from log import log
 from player import Player, DEV_NULL
@@ -281,7 +281,7 @@ class Camviewer:
         self._cam_stop_user_request = False
         cams_configs = self._info_collector_thread.cams_configs
 
-        self._player_split = PlayerSplit(cams_configs, WIN_ARR)
+        self._player_split = PlayerSplit(cams_configs)
         self._player_split.play()
 
         if self._cam_stop_user_request:

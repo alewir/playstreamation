@@ -1,11 +1,12 @@
 import logging
 import os
-from subprocess import Popen, PIPE, STDOUT
 import time
-import subprocess
+from subprocess import Popen, PIPE, STDOUT, check_output
 
-from cfgviewer.cfgpanel.constants import MAX_CAM_AMOUNT
-from log import log
+from log_config import log
+
+HOME_DIR = '/home/haso/camviewer/'
+VIDEO_NOT_CONFIGURED = 'not_configured.mp4'
 
 SCRIPT_OMX_WAIT = 'omx_wait.sh'
 SCRIPT_OMX_COUNT = "omx_count.sh"
@@ -13,28 +14,32 @@ SCRIPT_OMX_KILL_SINGLE = "omx_kill_single.sh"
 SCRIPT_OMX_KILL_ALL = 'omx_kill_all.sh'
 
 BASH_SHEBANG = '#!/usr/bin/env bash\n'
-KEY_OMXPLAYER_QUIT = 'q'
-PLAYER_NAME = 'omxplayer'
 DEV_NULL = open(os.devnull, 'w')
 
 PROC_CHECK_INTERVAL_S = 5
 PERIODIC_RESTART_EVERY_CHECK = 720
 
+# These depends on actual screen used - should be calculated somehow
+WIN_0 = '0,0,528,298'
+WIN_1 = '532,0,1060,298'
+WIN_2 = '0,302,528,600'
+WIN_3 = '532,302,1060,600'
+WIN_COORDS = [WIN_0, WIN_1, WIN_2, WIN_3]
+
 logger = logging.getLogger(__name__)
 
 
 class PlayerSplit:
-    def __init__(self, config_array_4, win_array_4):
+    def __init__(self, cam_configs_array_4):
         self.total_stream_count = 0
-        self.cam_configs = config_array_4
-        self.win_info = win_array_4
+        self.cam_configs = cam_configs_array_4
         self.start_commands = []
         self.check_counters = []
 
         self.auto_restart_enabled = True
 
     def play(self):
-        for stream_id in range(0, MAX_CAM_AMOUNT):
+        for stream_id in range(0, len(WIN_COORDS)):
             start_cmd = self.prepare_player_start_command(stream_id)
 
             self.start_commands.append(start_cmd)
@@ -48,9 +53,9 @@ class PlayerSplit:
 
             log.info("Checking if streams are working...")
             streams_to_start = []
-            for stream_id in range(0, MAX_CAM_AMOUNT):
-                win_coords = self.win_info[stream_id]
-                omx_proc_count = subprocess.check_output(['bash', SCRIPT_OMX_COUNT, win_coords])
+            for stream_id in range(0, len(WIN_COORDS)):
+                win_coords = WIN_COORDS[stream_id]
+                omx_proc_count = check_output(['bash', SCRIPT_OMX_COUNT, win_coords])
 
                 self.check_counters[stream_id] += 1
                 check_number = self.check_counters[stream_id]
@@ -100,10 +105,10 @@ class PlayerSplit:
 
         cam_config = self.cam_configs[i]
         address = cam_config.address
-        win_coords = self.win_info[i]
+        win_coords = WIN_COORDS[i]
 
         if not address:
-            url = '/home/haso/camviewer/not_configured.mp4'
+            url = HOME_DIR + VIDEO_NOT_CONFIGURED
             cmd = "omxplayer --adev hdmi --timeout 5 --blank --no-osd --loop --win %s %s" % (win_coords, url)
         else:
             url = cam_config.sub_stream_url()
@@ -111,7 +116,7 @@ class PlayerSplit:
             self.total_stream_count += 1
         log.info(' - Player[split-%d] - omx command: (%s).' % (i, cmd))
 
-        script_path = '/home/haso/camviewer/start%d.sh' % i
+        script_path = (HOME_DIR + '/start%d.sh') % i
         f = open(script_path, 'w+')
         f.write(BASH_SHEBANG)
         f.write(cmd + '\n')
@@ -139,12 +144,12 @@ def kill_single_omx_window(i, win_coords_filter):
     screen_name_filter = '[c]amera%d' % (i + 1)
     kill_single_command = ['bash', SCRIPT_OMX_KILL_SINGLE, win_coords_filter, screen_name_filter]
     log.info(' --- Player[split-%d] - stopping players for single window, cmd=(%s)' % (i, kill_single_command))
-    kill_result = subprocess.check_output(kill_single_command)
+    kill_result = check_output(kill_single_command)
     log.info(' --- Player[split-%d] kill single window result: (%s)', i, kill_result)
 
 
 def kill_all_omx_processes():
     kill_all_command = ['bash', SCRIPT_OMX_KILL_ALL]
     log.info("Player[split] - stopping players for all windows, cmd=(%s)" % kill_all_command)
-    kill_result = subprocess.check_output(kill_all_command)
+    kill_result = check_output(kill_all_command)
     log.info(' --- Player[split] kill all windows result: (%s)', kill_result)
