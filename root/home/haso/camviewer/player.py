@@ -2,7 +2,7 @@ import logging
 import os
 from subprocess import Popen, PIPE, STDOUT
 
-from log import log
+from log_config import log
 
 KEY_OMXPLAYER_QUIT = 'q'
 

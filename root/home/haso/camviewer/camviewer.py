@@ -14,7 +14,7 @@ import info_collector
 import info_window
 from cfgviewer.cfgpanel.constants import AUTO_CLOSE_TIME, CYCLE_TIME_DEFAULT, WIN_SINGLE, CFG_CAM_IP_FILENAME, CYCLE_TIME_MAX_INCR, EMPTY_CONFIG_CONTENT, CAM_STATUS_OK
 from dbus_omxplayer import send_dbus_stop, OMXPlayerStopError
-from log import log
+from log_config import log
 from player import Player, DEV_NULL
 from player_split import PlayerSplit, kill_all_omx_processes
 from utils import NAME_MODE_SINGLE, NAME_MODE_SPLIT, NAME_MODE_AUTO, MODE_SINGLE, MODE_SPLIT, MODE_AUTO

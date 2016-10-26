@@ -3,7 +3,7 @@
 import zmq
 
 from cfgviewer.cfgpanel.constants import ZMQ_PORT
-from log import log
+from log_config import log
 
 
 class ZmqConsumer:

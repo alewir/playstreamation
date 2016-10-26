@@ -6,9 +6,9 @@ import time
 import pyping
 
 from cfgviewer.cfgpanel.config_utils import parse_interfaces_cfg, parse_cam_config, ConfigEntry
-from cfgviewer.cfgpanel.constants import CAM_STATUS_INIT, CAM_STATUS_UNDEFINED, CAM_STATUS_OK, CAM_STATUS_NOT_CONNECTED
 from cfgviewer.cfgpanel.utils import *
-from info_window import log, PING_DELAY
+from info_window import PING_DELAY
+from log_config import log
 
 
 def ping(cam_address):

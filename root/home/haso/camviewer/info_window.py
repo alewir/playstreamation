@@ -8,7 +8,7 @@ from Tkinter import Tk, Frame, Label, BOTH, StringVar
 from PIL import Image, ImageTk
 
 from cfgviewer.cfgpanel.constants import MAX_CAM_AMOUNT, CAM_STATUS_INIT
-from log import log
+from log_config import log
 from utils import MODE_SPLIT, MODE_AUTO, SCREEN_RES, APP_LOGO_PNG, APP_HELP_S_PNG, APP_HELP_A_PNG, APP_HELP_4_PNG, MODE_SINGLE
 
 BORDER_WIDTH = 3

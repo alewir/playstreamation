@@ -84,7 +84,7 @@ class PlayerSplit:
                 for stream_id_to_start in streams_to_start:
                     self.start_player(stream_id_to_start)
             else:
-                # something is wrong - stopping player
+                # something is wrong - stopping players for all streams and exiting...
                 log.info(' --- Player[split] >>> All streams are down (or none is configured)...')
                 self.disable_auto_restart()
 

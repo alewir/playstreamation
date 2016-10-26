@@ -1,6 +1,6 @@
 from threading import Thread
 
-from log import log
+from log_config import log
 from zmq_consumer import ZmqConsumer
 
 BTN_NAME_ESC = 'ESC'
