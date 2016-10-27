@@ -7,6 +7,7 @@ sudo apt-get install subversion
 sudo apt-get install daemontools daemontools-run
 sudo apt-get install python-imaging-tk
 sudo apt-get install screen
+sudo apt-get install fbi
 
 # tested with version: 1.9.4
 sudo pip install django
@@ -31,6 +32,7 @@ sudo chown -R "$PS_USER" *
 
 bash fix_permissions.sh
 ./install_services.sh
+./install_logo.sh
 
 sudo mv -vf /etc/network/interfaces /etc/network/interfaces.old
 sudo ln -vs "$PS_HOME"/interfaces /etc/network/interfaces
