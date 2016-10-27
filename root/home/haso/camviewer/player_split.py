@@ -111,10 +111,11 @@ class PlayerSplit:
 
         if not address:
             url = HOME_DIR + VIDEO_NOT_CONFIGURED
-            cmd = "omxplayer --adev hdmi --timeout 5 --blank --no-osd --loop --win %s %s" % (win_coords, url)
+            cmd = "omxplayer --adev hdmi --aidx -1 --timeout 5 --blank --no-keys --no-osd --loop --win %s %s" % (win_coords, url)
+            # NOTE: allowed options are either --live or --no-osd and not both
         else:
             url = cam_config.sub_stream_url()
-            cmd = "omxplayer --adev hdmi --timeout 5 --blank --live --aspect-mode fill --avdict rtsp_transport:tcp --win %s \"%s\"" % (win_coords, url)
+            cmd = "omxplayer --adev hdmi --aidx -1 --timeout 5 --blank --no-keys --live --aspect-mode fill --avdict rtsp_transport:tcp --win %s \"%s\"" % (win_coords, url)
             self.total_stream_count += 1
         log.info(' - Player[stream-%d] - omx command: (%s).' % (i, cmd))
 

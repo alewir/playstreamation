@@ -27,6 +27,7 @@ class Player:
 
         command = ['omxplayer',
                    '--adev', 'hdmi',
+                   '--aidx', "-1",  # disable audio
                    '--timeout', '5',
                    '--blank',
                    '--live' if self.live else '--no-osd',
@@ -47,7 +48,7 @@ class Player:
     def _stop(self):
         if self.process is not None:
             try:
-                self.process.stdin.write(KEY_OMXPLAYER_QUIT)  # send quit command
+                self.process.stdin.write(KEY_OMXPLAYER_QUIT)  # send quit command 'q' (player must not use '--no-keys' option)
                 self.process.terminate()
                 self.process.wait()
 

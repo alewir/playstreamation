@@ -90,9 +90,10 @@ class Playstreamation:
         win_coords = self.win_coords[i]
 
         if not stream_url:
-            cmd = "omxplayer --adev hdmi --timeout 5 --blank --no-osd --loop --win %s %s" % (win_coords, VIDEO_NOT_CONFIGURED)
+            cmd = "omxplayer --adev hdmi --aidx -1 --timeout 5 --blank --no-keys --no-osd --loop --win %s %s" % (win_coords, VIDEO_NOT_CONFIGURED)
+            # NOTE: allowed options are either --live or --no-osd and not both
         else:
-            cmd = "omxplayer --adev hdmi --timeout 5 --blank --live --aspect-mode fill --avdict rtsp_transport:tcp --win %s \"%s\"" % (win_coords, stream_url)
+            cmd = "omxplayer --adev hdmi --aidx -1 --timeout 5 --blank --no-keys --live --aspect-mode fill --avdict rtsp_transport:tcp --win %s \"%s\"" % (win_coords, stream_url)
         log.info(' - Player[stream-%d] - omx command: (%s).' % (i, cmd))
 
         script_path = './start%d.sh' % i
