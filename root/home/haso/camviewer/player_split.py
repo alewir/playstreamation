@@ -15,6 +15,7 @@ SCRIPT_OMX_KILL_SINGLE = "omx_kill_single.sh"
 
 BASH_SHEBANG = '#!/usr/bin/env bash\n'
 DEV_NULL = open(os.devnull, 'w')
+SCREEN_NAME_PATTERN = 'camera%d'
 
 PROC_CHECK_INTERVAL_S = 5
 PERIODIC_RESTART_EVERY_CHECK = 720
@@ -108,22 +109,23 @@ class PlayerSplit:
         cam_config = self.cam_configs[i]
         address = cam_config.address
         win_coords = WIN_COORDS[i]
+        screen_name = SCREEN_NAME_PATTERN % i
+        dbus_name = "org.mpris.MediaPlayer2.omxplayer.%s" % screen_name
 
         if not address:
             url = HOME_DIR + VIDEO_NOT_CONFIGURED
-            cmd = "omxplayer --adev hdmi --aidx -1 --timeout 5 --blank --no-keys --no-osd --loop --win %s %s" % (win_coords, url)
+            cmd = "omxplayer --adev hdmi --aidx -1 --timeout 5 --blank --no-keys --no-osd --loop --win %s --dbus_name %s %s" % (win_coords, dbus_name, url)
             # NOTE: allowed options are either --live or --no-osd and not both
         else:
             url = cam_config.sub_stream_url()
-            cmd = "omxplayer --adev hdmi --aidx -1 --timeout 5 --blank --no-keys --live --aspect-mode fill --avdict rtsp_transport:tcp --win %s \"%s\"" % (win_coords, url)
+            cmd = "omxplayer --adev hdmi --aidx -1 --timeout 5 --blank --no-keys --live --aspect-mode fill --avdict rtsp_transport:tcp --win %s --dbus_name %s \"%s\"" % (win_coords, dbus_name, url)  # quotes around stream are required in some cases
             self.total_stream_count += 1
         log.info(' - Player[stream-%d] - omx command: (%s).' % (i, cmd))
 
-        script_path = (HOME_DIR + 'start%d.sh') % i
+        script_path = HOME_DIR + ('start%d.sh' % i)
         store_as_script_on_disk(i, cmd, script_path)
 
         # prepare starting commands for current script
-        screen_name = 'camera%d' % i
         start_cmd = ['screen', '-dmS', screen_name, "sh", script_path]
         log.info(' - Player[stream-%d] - start command: (%s).' % (i, start_cmd))
         return start_cmd
@@ -149,7 +151,7 @@ def store_as_script_on_disk(i, content, script_path):
 
 
 def kill_single_omx_window(i, win_coords_filter):
-    screen_name_filter = '[c]amera%d' % i
+    screen_name_filter = SCREEN_NAME_PATTERN % i
     kill_single_command = ['bash', SCRIPT_OMX_KILL_SINGLE, win_coords_filter, screen_name_filter]
     log.info(' --- Player[stream-%d] stopping players for single window, cmd=(%s)' % (i, kill_single_command))
     kill_result = check_output(kill_single_command)

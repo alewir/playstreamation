@@ -1,9 +1,11 @@
 import logging
 import os
 import time
+
 from subprocess import Popen, PIPE, STDOUT, check_output
 
 from log_config import log
+from dbus_omxplayer import send_dbus_action, ACTION_POS
 
 VIDEO_NOT_CONFIGURED = 'not_configured.mp4'
 
@@ -13,6 +15,7 @@ SCRIPT_OMX_KILL_SINGLE = "omx_kill_single.sh"
 
 BASH_SHEBANG = '#!/usr/bin/env bash\n'
 DEV_NULL = open(os.devnull, 'w')
+SCREEN_NAME_PATTERN = 'camera%d'
 
 PROC_CHECK_INTERVAL_S = 5
 PERIODIC_RESTART_EVERY_CHECK = 720
@@ -25,6 +28,7 @@ class Playstreamation:
         self.cam_streams = cam_streams_array_4
         self.win_coords = win_coords_array_4
         self.start_commands = []
+        self.stream_position = []
         self.check_counters = []
         self.restart_counters = []
 
@@ -54,12 +58,27 @@ class Playstreamation:
             streams_to_start = []
             for stream_id in range(0, len(self.cam_streams)):
                 win_coords = self.win_coords[stream_id]
+
                 omx_proc_count = check_output(['bash', SCRIPT_OMX_COUNT, win_coords])
+                ps_count = omx_proc_count.rstrip('\n')
 
                 self.check_counters[stream_id] += 1
                 check_number = self.check_counters[stream_id]
                 instance_no = self.restart_counters[stream_id]
-                log.info(" -- Player[stream-%d/%d] process check %d processes found=%s" % (stream_id, instance_no, check_number, omx_proc_count.rstrip('\n')))
+
+                pos = self.stream_position[stream_id]
+                if pos >= 0 and ps_count > 0:
+                    # noinspection PyBroadException
+                    try:
+                        pos_current = send_dbus_action(stream_id, ACTION_POS)
+                        if pos_current is not None:
+                            self.stream_position[stream_id] = pos_current
+                    except BaseException:
+                        pos_current = 'unknown'
+                else:
+                    pos_current = 'N/A'
+
+                log.info(" -- Player[stream-%d/%d] check %d proc=%s pos=%s" % (stream_id, instance_no, check_number, ps_count, pos_current))
                 if omx_proc_count is not None and self.auto_restart_enabled:
                     proc_count_int = int(omx_proc_count)
                     if proc_count_int == 0:
@@ -77,6 +96,8 @@ class Playstreamation:
                         self.start_player(stream_id)  # instant restart
                     else:
                         pass  # keep playing
+                else:
+                    log.error('Invalid processes count received (None).')
 
             # try to start scheduled streams
             for stream_id_to_start in streams_to_start:
@@ -88,19 +109,24 @@ class Playstreamation:
 
         stream_url = self.cam_streams[i]
         win_coords = self.win_coords[i]
+        screen_name = SCREEN_NAME_PATTERN % i
+        dbus_name = "org.mpris.MediaPlayer2.omxplayer.%s" % screen_name
 
         if not stream_url:
-            cmd = "omxplayer --adev hdmi --aidx -1 --timeout 5 --blank --no-keys --no-osd --loop --win %s %s" % (win_coords, VIDEO_NOT_CONFIGURED)
+            url = VIDEO_NOT_CONFIGURED
+            cmd = "omxplayer --adev hdmi --aidx -1 --timeout 5 --blank --no-keys --no-osd --loop --win %s --dbus_name %s %s" % (win_coords, dbus_name, url)
             # NOTE: allowed options are either --live or --no-osd and not both
+            self.stream_position.append(-1)
         else:
-            cmd = "omxplayer --adev hdmi --aidx -1 --timeout 5 --blank --no-keys --live --aspect-mode fill --avdict rtsp_transport:tcp --win %s \"%s\"" % (win_coords, stream_url)
+            url = stream_url
+            cmd = "omxplayer --adev hdmi --aidx -1 --timeout 5 --blank --no-keys --live --aspect-mode fill --avdict rtsp_transport:tcp --win %s --dbus_name %s \"%s\"" % (win_coords, dbus_name, url)  # quotes around stream are required in some cases
+            self.stream_position.append(0)
         log.info(' - Player[stream-%d] - omx command: (%s).' % (i, cmd))
 
         script_path = './start%d.sh' % i
         store_as_script_on_disk(i, cmd, script_path)
 
         # prepare starting commands for current script
-        screen_name = 'camera%d' % i
         start_cmd = ['screen', '-dmS', screen_name, "sh", script_path]
         log.info(' - Player[stream-%d] - start command: (%s).' % (i, start_cmd))
         return start_cmd
@@ -110,6 +136,8 @@ class Playstreamation:
         Popen(player_start_command, stdin=PIPE, stdout=DEV_NULL, stderr=STDOUT, close_fds=True, bufsize=0)  # async. execution, instant exit
         self.check_counters[i] = 0
         self.restart_counters[i] += 1
+        if self.stream_position[i] > 0:
+            self.stream_position[i] = 0
         log.info(' --- Player[stream-%d] started with command: (%s)' % (i, repr(player_start_command)))
 
     def disable_auto_restart(self):
@@ -126,7 +154,7 @@ def store_as_script_on_disk(i, content, script_path):
 
 
 def kill_single_omx_window(i, win_coords_filter):
-    screen_name_filter = '[c]amera%d' % i
+    screen_name_filter = SCREEN_NAME_PATTERN % i
     kill_single_command = ['bash', SCRIPT_OMX_KILL_SINGLE, win_coords_filter, screen_name_filter]
     log.info(' --- Player[stream-%d] stopping players for single window, cmd=(%s)' % (i, kill_single_command))
     kill_result = check_output(kill_single_command)
@@ -143,9 +171,9 @@ def kill_all_omx_processes():
 def main_for_testing():
     cam_streams = [
         "",
-        "rtsp://mpv.cdn3.bigCDN.com:554/bigCDN/mp4:bigbuckbunnyiphone_400.mp4",
-        "rtsp://172.16.1.191:554/av0_1",  # some address where there is no stream
-        "rtsp://mm2.pcslab.com/mm/7h2000.mp4"
+        "rtsp://172.16.1.195:554/av0_1",  # rtsp://mpv.cdn3.bigCDN.com:554/bigCDN/mp4:bigbuckbunnyiphone_400.mp4
+        "rtsp://172.16.1.190:554/av0_1",  # some address where there is no stream
+        "rtsp://172.16.1.196:554/av0_1"   # rtsp://mm2.pcslab.com/mm/7h2000.mp4
     ]
 
     win_coords = [
