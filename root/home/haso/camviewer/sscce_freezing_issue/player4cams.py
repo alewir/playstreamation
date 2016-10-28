@@ -67,7 +67,7 @@ class Playstreamation:
                 instance_no = self.restart_counters[stream_id]
 
                 pos = self.stream_position[stream_id]
-                if pos >= 0 and ps_count > 0:
+                if pos >= 0 and ps_count is not None and int(ps_count) > 0:
                     # noinspection PyBroadException
                     try:
                         pos_current = send_dbus_action(stream_id, ACTION_POS)
