@@ -1,5 +1,4 @@
 # coding=utf-8
-import subprocess
 import threading
 import time
 
@@ -82,9 +81,9 @@ class InfoCollectorThread(threading.Thread):
         super(InfoCollectorThread, self).__init__()
 
         try:
-            self.cfg_revision = subprocess.check_output("svnversion").rstrip('\n')
+            self.cfg_revision = '000'  # TODO: Get build/revision number somehow (a bit tricky after moving from SVN to GIT)
         except OSError:
-            log.error('Could not get SVN revision...')
+            log.error('Could not get revision number...')
 
     def run(self):
         try:

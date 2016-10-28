@@ -100,7 +100,7 @@ class Playstreamation:
         store_as_script_on_disk(i, cmd, script_path)
 
         # prepare starting commands for current script
-        screen_name = 'camera%d' % (i + 1)
+        screen_name = 'camera%d' % i
         start_cmd = ['screen', '-dmS', screen_name, "sh", script_path]
         log.info(' - Player[stream-%d] - start command: (%s).' % (i, start_cmd))
         return start_cmd
@@ -126,11 +126,11 @@ def store_as_script_on_disk(i, content, script_path):
 
 
 def kill_single_omx_window(i, win_coords_filter):
-    screen_name_filter = '[c]amera%d' % (i + 1)
+    screen_name_filter = '[c]amera%d' % i
     kill_single_command = ['bash', SCRIPT_OMX_KILL_SINGLE, win_coords_filter, screen_name_filter]
     log.info(' --- Player[stream-%d] stopping players for single window, cmd=(%s)' % (i, kill_single_command))
     kill_result = check_output(kill_single_command)
-    log.info(' --- Player[stream-%d] kill single window result: (%s)', i, kill_result)
+    log.info(' --- Player[stream-%d] kill single window result: (\n%s)', i, kill_result)
 
 
 def kill_all_omx_processes():
