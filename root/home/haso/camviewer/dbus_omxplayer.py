@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-import os
 import time
 # noinspection PyUnresolvedReferences
 import dbus
 
-DBUS_FILE_NAME_OMXPLAYER = '/tmp/omxplayerdbus.%s' % os.getlogin()
+DBUS_FILE_NAME_OMXPLAYER = '/tmp/omxplayerdbus.root'
 
 
 def main():
