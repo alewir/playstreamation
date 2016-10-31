@@ -12,7 +12,7 @@ if [ -n "$win_coords" ] && [ -n "$screen_name" ]; then
     echo "ps results="${ps_list}
     pid_s=`echo "$ps_list" | awk '{print $2}'`
     echo "PIDS="${pid_s}
-    echo "$pid_s" | xargs -n 1 sudo kill -s SIGINT
+    echo "$pid_s" | xargs -n 1 sudo kill -s SIGKILL
     screen -X -S "$screen_name" kill
     exit 0
 else

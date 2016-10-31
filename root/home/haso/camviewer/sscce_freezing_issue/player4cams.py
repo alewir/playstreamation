@@ -1,7 +1,6 @@
 import logging
 import os
 import time
-
 from subprocess import Popen, PIPE, STDOUT, check_output
 
 from log_config import log
@@ -66,38 +65,50 @@ class Playstreamation:
                 check_number = self.check_counters[stream_id]
                 instance_no = self.restart_counters[stream_id]
 
-                pos = self.stream_position[stream_id]
-                if pos >= 0 and ps_count is not None and int(ps_count) > 0:
-                    # noinspection PyBroadException
-                    try:
-                        pos_current = send_dbus_action(stream_id, ACTION_POS)
-                        if pos_current is not None:
-                            self.stream_position[stream_id] = pos_current
-                    except BaseException:
-                        pos_current = 'unknown'
-                else:
-                    pos_current = 'N/A'
+                pos_previous = self.stream_position[stream_id]
 
-                log.info(" -- Player[stream-%d/%d] check %d proc=%s pos=%s" % (stream_id, instance_no, check_number, ps_count, pos_current))
-                if omx_proc_count is not None and self.auto_restart_enabled:
+                if omx_proc_count is not None:
+                    stream_freeze_detected = False
                     proc_count_int = int(omx_proc_count)
-                    if proc_count_int == 0:
-                        log.info(' --- Player[stream-%d] not running - scheduling start...' % stream_id)
-                        streams_to_start.append(stream_id)
-                    elif proc_count_int > 1:
-                        # just recover from glitches with many players opened for single stream (should not happen)
-                        log.info(' --- Player[stream-%d] running in too many instances - killing all and scheduling start.' % stream_id)
-                        kill_single_omx_window(stream_id, win_coords)
-                        streams_to_start.append(stream_id)
-                    elif proc_count_int == 1 and check_number % PERIODIC_RESTART_EVERY_CHECK == 0:
-                        # restart stream periodically even if it is still running (workaround for image freezing after w while)
-                        log.info(' --- Player[stream-%d] scheduling periodic restart for counter=[%d].' % (stream_id, check_number))
-                        kill_single_omx_window(stream_id, win_coords)
-                        self.start_player(stream_id)  # instant restart
+                    if proc_count_int == 1:
+                        if pos_previous >= 0:
+                            # noinspection PyBroadException
+                            try:
+                                pos = send_dbus_action(stream_id, ACTION_POS)
+                                self.stream_position[stream_id] = pos
+
+                                if pos_previous == pos:
+                                    stream_freeze_detected = True
+                            except BaseException:
+                                pos = '[unknown]'
+                        else:
+                            pos = '[not tracking]'
                     else:
-                        pass  # keep playing
+                        pos = '[instances issue]'
+
+                    log.info(" -- Player[stream-%d/%d] check %d proc=%s pos=%s freeze detected=%s" % (stream_id, instance_no, check_number, ps_count, pos, stream_freeze_detected))
+                    if self.auto_restart_enabled:
+                        if proc_count_int == 0:
+                            log.info(' --- Player[stream-%d/%d] not running - scheduling start...' % (stream_id, check_number))
+                            streams_to_start.append(stream_id)
+                        elif proc_count_int > 1:
+                            # just recover from glitches with many players opened for single stream (should not happen)
+                            log.info(' --- Player[stream-%d/%d] running in too many instances - killing all and scheduling start.' % (stream_id, check_number))
+                            kill_single_omx_window(stream_id, win_coords)
+                            streams_to_start.append(stream_id)
+                        elif proc_count_int == 1:
+                            if stream_freeze_detected:
+                                log.info(' --- Player[stream-%d/%d] stream freeze detected - immediate restart.' % (stream_id, check_number))
+                                self.player_immediate_restart(stream_id, win_coords)
+                            elif check_number % PERIODIC_RESTART_EVERY_CHECK == 0:  # restart stream periodically even if it is still running (workaround for image freezing after w while)
+                                log.info(' --- Player[stream-%d/%d] performing periodic instant restart.' % (stream_id, check_number))
+                                self.player_immediate_restart(stream_id, win_coords)
+                        else:
+                            pass  # keep playing
                 else:
                     log.error('Invalid processes count received (None).')
+
+            log.info('Performing scheduled starts...')
 
             # try to start scheduled streams
             for stream_id_to_start in streams_to_start:
@@ -130,6 +141,10 @@ class Playstreamation:
         start_cmd = ['screen', '-dmS', screen_name, "sh", script_path]
         log.info(' - Player[stream-%d] - start command: (%s).' % (i, start_cmd))
         return start_cmd
+
+    def player_immediate_restart(self, stream_id, win_coords):
+        kill_single_omx_window(stream_id, win_coords)
+        self.start_player(stream_id)
 
     def start_player(self, i):
         player_start_command = self.start_commands[i]

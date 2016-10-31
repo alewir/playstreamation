@@ -6,7 +6,7 @@ log_level = logging.INFO
 
 log_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-log_handler_file = RotatingFileHandler(filename='camviewer.log', mode='w', maxBytes=5000000, backupCount=3)
+log_handler_file = RotatingFileHandler(filename='camviewer.log', mode='w', maxBytes=10000000, backupCount=3)
 log_handler_console = logging.StreamHandler()
 log_handler_console.setLevel(log_level)
 log_handler_console.setFormatter(log_formatter)
