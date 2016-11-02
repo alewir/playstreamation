@@ -1,3 +1,15 @@
+# Copyright (C) 2016. Haso S.C. J. Macioszek & A. Paszek
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
 """cfgviewer URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -14,6 +26,7 @@ Including another URLconf
     2. Import the include() function: from django.conf.urls import url, include
     3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
+
 from django.conf.urls import include
 from django.conf.urls import url
 from django.contrib import admin

@@ -1,7 +1,19 @@
 #!/usr/bin/env python
-from cfgviewer.cfgpanel.constants import PIN_ENTER, PIN_ESC, PIN_UP, PIN_DOWN, PIN_LEFT, PIN_RIGHT
-from cfgviewer.cfgpanel.utils import btn_enter, btn_esc, btn_up, btn_down, btn_left, btn_right
 
+# Copyright (C) 2016. Haso S.C. J. Macioszek & A. Paszek
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+from cfgviewer.cfgpanel.utils import btn_enter, btn_esc, btn_up, btn_down, btn_left, btn_right
+from cfgviewer.cfgpanel.constants import PIN_ENTER, PIN_ESC, PIN_UP, PIN_DOWN, PIN_LEFT, PIN_RIGHT
 # noinspection PyUnresolvedReferences
 from gpiozero import Button
 # noinspection PyUnresolvedReferences

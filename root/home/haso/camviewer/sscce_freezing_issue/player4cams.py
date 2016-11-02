@@ -17,7 +17,7 @@ DEV_NULL = open(os.devnull, 'w')
 SCREEN_NAME_PATTERN = 'camera%d'
 
 PROC_CHECK_INTERVAL_S = 5
-PERIODIC_RESTART_EVERY_CHECK = 720
+PERIODIC_RESTART_EVERY_CHECK = 8640  # default: 720 for 5 seconds interval = 1h
 
 logger = logging.getLogger(__name__)
 
