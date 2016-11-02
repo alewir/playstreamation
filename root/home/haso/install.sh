@@ -37,7 +37,4 @@ bash fix_permissions.sh
 sudo mv -vf /etc/network/interfaces /etc/network/interfaces.old
 sudo ln -vs "$PS_HOME"/interfaces /etc/network/interfaces
 
-sudo mv -vf /etc/splash.jpg /etc/splash.jpg.old
-sudo ln -vs "$PS_HOME"/branding/splash.jpg /etc/splash.jpg
-
 exit 0
