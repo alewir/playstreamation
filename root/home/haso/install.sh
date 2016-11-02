@@ -19,7 +19,7 @@ sudo pip install fysom
 sudo pip install pyzmq
 
 export PS_USER=haso
-export REPO_URL=svn co https://github.com/alewir/playstreamation.git/trunk/ .
+export REPO_URL=https://github.com/alewir/playstreamation.git/trunk/
 
 cd /home/"$PS_USER"
 mkdir camviewer
