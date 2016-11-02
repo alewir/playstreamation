@@ -3,6 +3,7 @@
 sudo apt-get update
 
 sudo apt-get install python-dev python-pip
+# using SVN to easily clone only one of subdirectories from GIT
 sudo apt-get install subversion
 sudo apt-get install daemontools daemontools-run
 sudo apt-get install python-imaging-tk
@@ -19,7 +20,7 @@ sudo pip install fysom
 sudo pip install pyzmq
 
 export PS_USER=haso
-export REPO_URL=https://github.com/alewir/playstreamation.git/trunk/
+export REPO_URL=https://github.com/alewir/playstreamation.git/trunk/root/home/haso/camviewer/
 
 cd /home/"$PS_USER"
 mkdir camviewer
