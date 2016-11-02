@@ -27,7 +27,7 @@ sudo chown "$PS_USER" camviewer
 cd camviewer
 export PS_HOME=`pwd`  # TODO: this path needs to be stored and set at startup (preferably for all users)
 
-svn co "REPO_URL" .
+svn co "$REPO_URL" .
 sudo chown -R "$PS_USER" *
 
 bash fix_permissions.sh
