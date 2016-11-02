@@ -33,7 +33,6 @@ sudo chown -R "$PS_USER" *
 
 bash fix_permissions.sh
 ./install_services.sh
-./install_logo.sh
 
 sudo mv -vf /etc/network/interfaces /etc/network/interfaces.old
 sudo ln -vs "$PS_HOME"/interfaces /etc/network/interfaces
