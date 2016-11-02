@@ -15,6 +15,7 @@
 export INSTALL_DIR=~haso/camviewer
 
 sudo mkdir /etc/service
+sudo mkdir /service
 
 export INSTALL_DIR=~haso/camviewer
 
