@@ -12,10 +12,16 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-rm -rf *.log
-rm -rf *.log.*
-rm -rf *.pyc
+rm -rfv *.log
+rm -rfv *.log.*
+rm -rfv *.pyc
+rm -rfv start?.sh
 
-rm -rf config_cam.cfg
+cp -v config_cam.cfg ../
+cp -v config_mon.cfg ../
+cp -v interfaces ../
+
+rm -rfv config_cam.cfg
 
 svn revert config_mon.cfg
+svn revert interfaces
