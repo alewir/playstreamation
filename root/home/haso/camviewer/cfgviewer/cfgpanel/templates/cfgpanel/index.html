@@ -18,16 +18,19 @@
         var inputObj1 = document.getElementById(inputId1);
         var inputObj2 = document.getElementById(inputId2);
 
-        if (selectObj.value == "haso") {
+        if (selectObj.value == "samsung_snz5200") {
+            inputObj1.disabled = false;
+            inputObj2.disabled = false;
+        } else if (selectObj.value == "levelone_fcs1091") {
+            inputObj1.disabled = true;
+            inputObj2.disabled = true;
+            inputObj1.value = '';
+            inputObj2.value = '';
+        } else { // HASO
             inputObj1.disabled = true;
             inputObj2.disabled = true;
             inputObj1.value = '0';
             inputObj2.value = '1';
-        } else {
-            inputObj1.disabled = false;
-            inputObj2.disabled = false;
-            inputObj1.value = '';
-            inputObj2.value = '';
         }
     }
 
@@ -98,15 +101,20 @@
             <td class="param_pass"><input name="new_cam_pass1" value="{{ current_cam_pass1 }}" type="password"/></td>
             <td class="param_type">
                 <select name="new_cam_type1" id="new_cam_type1" onChange="checkOption(this.id, 'current_cam_stream_m1', 'current_cam_stream_s1');">
-                    {% ifequal current_cam_type1 'haso' %}
-                    <option value="haso" selected="selected">HASO KG-1</option>
+                    {% ifequal current_cam_type1 'haso_kg1' %}
+                    <option value="haso_kg1" selected="selected">HASO KG-1</option>
                     {% else %}
-                    <option value="haso">HASO KG-1</option>
+                    <option value="haso_kg1">HASO KG-1</option>
                     {% endifequal %}
-                    {% ifequal current_cam_type1 'samsung' %}
-                    <option value="samsung" selected="selected">Samsung SNZ-5200</option>
+                    {% ifequal current_cam_type1 'samsung_snz5200' %}
+                    <option value="samsung_snz5200" selected="selected">Samsung SNZ-5200</option>
                     {% else %}
-                    <option value="samsung">Samsung SNZ-5200</option>
+                    <option value="samsung_snz5200">Samsung SNZ-5200</option>
+                    {% endifequal %}
+                    {% ifequal current_cam_type1 'levelone_fcs1091' %}
+                    <option value="levelone_fcs1091" selected="selected">LevelOne FCS-1091</option>
+                    {% else %}
+                    <option value="levelone_fcs1091">LevelOne FCS-1091</option>
                     {% endifequal %}
                 </select>
             </td>
@@ -122,15 +130,20 @@
             <td class="param_pass"><input name="new_cam_pass2" value="{{ current_cam_pass2 }}" type="password"/></td>
             <td class="param_type">
                 <select name="new_cam_type2" id="new_cam_type2" onChange="checkOption(this.id, 'current_cam_stream_m2', 'current_cam_stream_s2');">
-                    {% ifequal current_cam_type2 'haso' %}
-                    <option value="haso" selected="selected">HASO KG-1</option>
+                    {% ifequal current_cam_type2 'haso_kg1' %}
+                    <option value="haso_kg1" selected="selected">HASO KG-1</option>
                     {% else %}
-                    <option value="haso">HASO KG-1</option>
+                    <option value="haso_kg1">HASO KG-1</option>
                     {% endifequal %}
-                    {% ifequal current_cam_type2 'samsung' %}
-                    <option value="samsung" selected="selected">Samsung SNZ-5200</option>
+                    {% ifequal current_cam_type2 'samsung_snz5200' %}
+                    <option value="samsung_snz5200" selected="selected">Samsung SNZ-5200</option>
                     {% else %}
-                    <option value="samsung">Samsung SNZ-5200</option>
+                    <option value="samsung_snz5200">Samsung SNZ-5200</option>
+                    {% endifequal %}
+                    {% ifequal current_cam_type2 'levelone_fcs1091' %}
+                    <option value="levelone_fcs1091" selected="selected">LevelOne FCS-1091</option>
+                    {% else %}
+                    <option value="levelone_fcs1091">LevelOne FCS-1091</option>
                     {% endifequal %}
                 </select>
             </td>
@@ -146,15 +159,20 @@
             <td class="param_pass"><input name="new_cam_pass3" value="{{ current_cam_pass3 }}" type="password"/></td>
             <td class="param_type">
                 <select name="new_cam_type3" id="new_cam_type3" onChange="checkOption(this.id, 'current_cam_stream_m3', 'current_cam_stream_s3');">
-                    {% ifequal current_cam_type3 'haso' %}
-                    <option value="haso" selected="selected">HASO KG-1</option>
+                    {% ifequal current_cam_type3 'haso_kg1' %}
+                    <option value="haso_kg1" selected="selected">HASO KG-1</option>
                     {% else %}
-                    <option value="haso">HASO KG-1</option>
+                    <option value="haso_kg1">HASO KG-1</option>
                     {% endifequal %}
-                    {% ifequal current_cam_type3 'samsung' %}
-                    <option value="samsung" selected="selected">Samsung SNZ-5200</option>
+                    {% ifequal current_cam_type3 'samsung_snz5200' %}
+                    <option value="samsung_snz5200" selected="selected">Samsung SNZ-5200</option>
                     {% else %}
-                    <option value="samsung">Samsung SNZ-5200</option>
+                    <option value="samsung_snz5200">Samsung SNZ-5200</option>
+                    {% endifequal %}
+                    {% ifequal current_cam_type3 'levelone_fcs1091' %}
+                    <option value="levelone_fcs1091" selected="selected">LevelOne FCS-1091</option>
+                    {% else %}
+                    <option value="levelone_fcs1091">LevelOne FCS-1091</option>
                     {% endifequal %}
                 </select>
             </td>
@@ -170,15 +188,20 @@
             <td class="param_pass"><input name="new_cam_pass4" value="{{ current_cam_pass4 }}" type="password"/></td>
             <td class="param_type">
                 <select name="new_cam_type4" id="new_cam_type4" onChange="checkOption(this.id, 'current_cam_stream_m4', 'current_cam_stream_s4');">
-                    {% ifequal current_cam_type4 'haso' %}
-                    <option value="haso" selected="selected">HASO KG-1</option>
+                    {% ifequal current_cam_type4 'haso_kg1' %}
+                    <option value="haso_kg1" selected="selected">HASO KG-1</option>
                     {% else %}
-                    <option value="haso">HASO KG-1</option>
+                    <option value="haso_kg1">HASO KG-1</option>
                     {% endifequal %}
-                    {% ifequal current_cam_type4 'samsung' %}
-                    <option value="samsung" selected="selected">Samsung SNZ-5200</option>
+                    {% ifequal current_cam_type4 'samsung_snz5200' %}
+                    <option value="samsung_snz5200" selected="selected">Samsung SNZ-5200</option>
                     {% else %}
-                    <option value="samsung">Samsung SNZ-5200</option>
+                    <option value="samsung_snz5200">Samsung SNZ-5200</option>
+                    {% endifequal %}
+                    {% ifequal current_cam_type4 'levelone_fcs1091' %}
+                    <option value="levelone_fcs1091" selected="selected">LevelOne FCS-1091</option>
+                    {% else %}
+                    <option value="levelone_fcs1091">LevelOne FCS-1091</option>
                     {% endifequal %}
                 </select>
             </td>

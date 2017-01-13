@@ -18,7 +18,7 @@ import subprocess
 
 from django.shortcuts import render
 
-from config_utils import parse_interfaces_cfg, parse_cam_config
+from config_utils import parse_interfaces_cfg, parse_cam_config, CAM_TYPE_HASO_KG1
 from constants import CFG_PATH, ADMIN_PASS, ERR_MSG_DETAILS, ERR_MSG_VALIDATION, REGEX_IP_FORMAT, REQUIRED_FORMAT_IP_ADDRESS, REGEX_IP_ADDRESS, KEYWORD_ADDRESS, KEYWORD_NETMASK
 from constants import CFG_SERIAL_FILENAME, CFG_MON_IP_FILENAME, DEFAULT_SERIAL, MON_ADDRESS_NOT_CONFIGURED, MON_NETMASK_NOT_CONFIGURED, CFG_CAM_IP_FILENAME
 from utils import replace, btn_esc
@@ -238,13 +238,13 @@ def index(request):
         if change_cam_address:
             with open(CFG_PATH + CFG_CAM_IP_FILENAME, 'w+') as f:
                 f.write('%s|%s|%s|%s|%s|%s|%s\n' % (
-                    new_cam_address1.strip(), new_cam_port1.strip(), new_cam_stream_m1.strip(), new_cam_stream_s1.strip(), new_cam_user1.strip(), new_cam_pass1.strip(), new_cam_type1.strip()))
+                    new_cam_address1.strip(), port_check(new_cam_port1), new_cam_stream_m1.strip(), new_cam_stream_s1.strip(), new_cam_user1.strip(), new_cam_pass1.strip(), new_cam_type1.strip()))
                 f.write('%s|%s|%s|%s|%s|%s|%s\n' % (
-                    new_cam_address2.strip(), new_cam_port2.strip(), new_cam_stream_m2.strip(), new_cam_stream_s2.strip(), new_cam_user2.strip(), new_cam_pass2.strip(), new_cam_type2.strip()))
+                    new_cam_address2.strip(), port_check(new_cam_port2), new_cam_stream_m2.strip(), new_cam_stream_s2.strip(), new_cam_user2.strip(), new_cam_pass2.strip(), new_cam_type2.strip()))
                 f.write('%s|%s|%s|%s|%s|%s|%s\n' % (
-                    new_cam_address3.strip(), new_cam_port3.strip(), new_cam_stream_m3.strip(), new_cam_stream_s3.strip(), new_cam_user3.strip(), new_cam_pass3.strip(), new_cam_type3.strip()))
+                    new_cam_address3.strip(), port_check(new_cam_port3), new_cam_stream_m3.strip(), new_cam_stream_s3.strip(), new_cam_user3.strip(), new_cam_pass3.strip(), new_cam_type3.strip()))
                 f.write('%s|%s|%s|%s|%s|%s|%s\n' % (
-                    new_cam_address4.strip(), new_cam_port4.strip(), new_cam_stream_m4.strip(), new_cam_stream_s4.strip(), new_cam_user4.strip(), new_cam_pass4.strip(), new_cam_type4.strip()))
+                    new_cam_address4.strip(), port_check(new_cam_port4), new_cam_stream_m4.strip(), new_cam_stream_s4.strip(), new_cam_user4.strip(), new_cam_pass4.strip(), new_cam_type4.strip()))
                 f.close()
 
             new_cam_address1 = ''
@@ -277,10 +277,10 @@ def index(request):
             new_cam_pass3 = ''
             new_cam_pass4 = ''
 
-            new_cam_type1 = 'haso'
-            new_cam_type2 = 'haso'
-            new_cam_type3 = 'haso'
-            new_cam_type4 = 'haso'
+            new_cam_type1 = CAM_TYPE_HASO_KG1
+            new_cam_type2 = CAM_TYPE_HASO_KG1
+            new_cam_type3 = CAM_TYPE_HASO_KG1
+            new_cam_type4 = CAM_TYPE_HASO_KG1
 
             btn_esc()  # emulates ESC button pressed - exits from streaming to configuration view
 
@@ -439,6 +439,11 @@ def index(request):
         pass
 
     return render(request, 'cfgpanel/index.html', context)
+
+
+def port_check(port_val):
+    port_val = port_val.strip()
+    return port_val if port_val is not None and len(port_val) > 0 else 554
 
 
 def is_valid_ip_field_value(address_value):

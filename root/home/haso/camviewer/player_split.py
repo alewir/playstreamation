@@ -15,8 +15,8 @@ import os
 import time
 from subprocess import Popen, PIPE, STDOUT, check_output
 
-from log_config import log
 from dbus_omxplayer import send_dbus_action, ACTION_POS
+from log_config import log
 
 HOME_DIR = '/home/haso/camviewer/'
 VIDEO_NOT_CONFIGURED = 'not_configured.mp4'
@@ -31,13 +31,16 @@ DEV_NULL = open(os.devnull, 'w')
 SCREEN_NAME_PATTERN = 'camera%d'
 
 PROC_CHECK_INTERVAL_S = 5
-PERIODIC_RESTART_EVERY_CHECK = 720
+PERIODIC_RESTART_EVERY_CHECK = 8640  # every 12h
 
-# These depends on actual screen used - should be calculated somehow
-WIN_0 = '0,0,528,298'
-WIN_1 = '532,0,1060,298'
-WIN_2 = '0,302,528,600'
-WIN_3 = '532,302,1060,600'
+# TODO: These screen resolution settings should be moved to some configuration file of got from the system settings somehow
+SCREEN_W = 1060
+SCREEN_H = 600
+
+WIN_0 = '%s,%s,%s,%s' % (0, 0, (SCREEN_W / 2) - 2, (SCREEN_H / 2) - 2)
+WIN_1 = '%s,%s,%s,%s' % ((SCREEN_W / 2) + 2, 0, SCREEN_W, (SCREEN_H / 2) - 2)
+WIN_2 = '%s,%s,%s,%s' % (0, (SCREEN_H / 2) + 2, (SCREEN_W / 2) - 2, SCREEN_H)
+WIN_3 = '%s,%s,%s,%s' % ((SCREEN_W / 2) + 2, (SCREEN_H / 2) + 2, SCREEN_W, SCREEN_H)
 WIN_COORDS = [WIN_0, WIN_1, WIN_2, WIN_3]
 
 logger = logging.getLogger(__name__)

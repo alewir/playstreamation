@@ -15,6 +15,10 @@ import string
 
 from constants import *
 
+CAM_TYPE_HASO_KG1 = 'haso_kg1'
+CAM_TYPE_SAMSUNG_SNZ5200 = 'samsung_snz5200'
+CAM_TYPE_LEVELONE_FCS1091 = 'levelone_fcs1091'
+
 
 class ConfigEntry(object):
     address = ''
@@ -28,48 +32,70 @@ class ConfigEntry(object):
     def __str__(self):
         return self.main_stream_url()
 
-    def info(self):
+    def cfg_info(self):
         if self.user:
-            auth = '%s:%s @ ' % (self.user, '***' if self.password else '')
+            auth = '%s:%s' % (self.user, '***' if self.password else '')
         else:
             auth = ''
 
-        if self.cam_type == 'haso':
-            streams = ' '
-            type_desc = 'typ: HASO KG-1'
-        elif self.cam_type == 'samsung':
-            streams = ' profil: %s/%s ' % (self.stream_m, self.stream_s)
-            type_desc = 'typ: Samsung SNZ-5200'
-        else:
-            streams = ' profil: %s/%s ' % (self.stream_m, self.stream_s)
-            type_desc = 'typ: nieznany'
+        if self.cam_type == CAM_TYPE_HASO_KG1:
+            profiles = ''
+            type_name = 'HASO_KG-1'
+        elif self.cam_type == CAM_TYPE_SAMSUNG_SNZ5200:
+            profiles = '%s/%s' % (self.stream_m, self.stream_s)
+            type_name = 'Samsung_SNZ-5200'
+        elif self.cam_type == CAM_TYPE_LEVELONE_FCS1091:
+            profiles = ''
+            type_name = 'LevelOne_FCS-1091'
+        else:  # UNKNOWN type
+            profiles = ''
+            type_name = 'nieznany'
 
-        port = 'port: %s' % self.port
-        return '[%s%s%s%s]' % (auth, port, streams, type_desc)
+        return self.port, type_name, auth, profiles
 
     def main_stream_url(self):
-        if self.cam_type == 'haso':
+        if self.cam_type == CAM_TYPE_HASO_KG1:
             if self.user:
                 return 'rtsp://%s:%s/av0_0&user=%s&password=%s' % (self.address, self.port, self.user, self.password)
             else:
                 return 'rtsp://%s:%s/av0_0' % (self.address, self.port)
-        else:
+        elif self.cam_type == CAM_TYPE_SAMSUNG_SNZ5200:
             if self.user:
                 return 'rtsp://%s:%s@%s:%s/profile%s/media.smp' % (self.user, self.password, self.address, self.port, self.stream_m)
             else:
                 return 'rtsp://%s:%s/profile%s/media.smp' % (self.address, self.port, self.stream_m)
+        elif self.cam_type == CAM_TYPE_LEVELONE_FCS1091:
+            if self.user:
+                return 'rtsp://%s:%s@%s:%s/img/media.sav' % (self.user, self.password, self.address, self.port)
+            else:
+                return 'rtsp://%s:%s/img/media.sav' % (self.address, self.port)
+        else:  # UNKNOWN TYPE
+            if self.user:
+                return 'rtsp://%s:%s@%s:%s/%s' % (self.user, self.password, self.address, self.port, self.stream_m)
+            else:
+                return 'rtsp://%s:%s/%s' % (self.address, self.port, self.stream_m)
 
     def sub_stream_url(self):
-        if self.cam_type == 'haso':
+        if self.cam_type == CAM_TYPE_HASO_KG1:
             if self.user:
                 return 'rtsp://%s:%s/av0_1&user=%s&password=%s' % (self.address, self.port, self.user, self.password)
             else:
                 return 'rtsp://%s:%s/av0_1' % (self.address, self.port)
-        else:
+        elif self.cam_type == CAM_TYPE_SAMSUNG_SNZ5200:
             if self.user:
                 return 'rtsp://%s:%s@%s:%s/profile%s/media.smp' % (self.user, self.password, self.address, self.port, self.stream_s)
             else:
                 return 'rtsp://%s:%s/profile%s/media.smp' % (self.address, self.port, self.stream_s)
+        elif self.cam_type == CAM_TYPE_LEVELONE_FCS1091:
+            if self.user:
+                return 'rtsp://%s:%s@%s:%s/img/media.sav' % (self.user, self.password, self.address, self.port)
+            else:
+                return 'rtsp://%s:%s/img/media.sav' % (self.address, self.port)
+        else:  # UNKNOWN TYPE
+            if self.user:
+                return 'rtsp://%s:%s@%s:%s/%s' % (self.user, self.password, self.address, self.port, self.stream_s)
+            else:
+                return 'rtsp://%s:%s/%s' % (self.address, self.port, self.stream_s)
 
 
 def parse_interfaces_cfg(str_mon):

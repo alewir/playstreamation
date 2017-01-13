@@ -26,6 +26,7 @@ from utils import MODE_SPLIT, MODE_AUTO, SCREEN_RES, APP_LOGO_PNG, APP_HELP_S_PN
 BORDER_WIDTH = 3
 DEF_RELIEF = SUNKEN
 DEF_FONT = "Helvetica"
+MONO_FONT = "Courier"
 FRM_BACKGROUND = "#AAAAAA"
 MSG_BACKGROUND = "#BBBBBB"
 MSG_TITLE_FOREGROUND = "#0B2161"
@@ -46,7 +47,8 @@ except _tkinter.TclError:
 class SysInfo(Frame):
     txt_var_serial = StringVar()
     txt_var_mon_cfg = StringVar()
-    txt_var_cam_cfg = StringVar()
+    txt_var_cam_cfg_page = StringVar()
+    txt_var_cam_cfg_stream = StringVar()
     txt_var_version = StringVar()
     txt_var_mode_name = StringVar()
 
@@ -69,8 +71,9 @@ class SysInfo(Frame):
         self.rowconfigure(1, weight=1)
 
         font_huge = tkFont.Font(family=DEF_FONT, size=36, weight="bold")
-        font_normal = tkFont.Font(family=DEF_FONT, size=15)
-        font_normal_bold = tkFont.Font(family=DEF_FONT, size=15, weight="bold")
+        font_mono = tkFont.Font(family=MONO_FONT, size=11)
+        font_normal = tkFont.Font(family=DEF_FONT, size=14)
+        font_normal_bold = tkFont.Font(family=DEF_FONT, size=16, weight="bold")
         font_small = tkFont.Font(family=DEF_FONT, size=10, weight="bold")
         font_tiny = tkFont.Font(family=DEF_FONT, size=10)
 
@@ -128,8 +131,10 @@ class SysInfo(Frame):
 
         lbl_cam_cfg_title = Label(frm_sysinfo, text="Adresy IP kamer", background=MSG_BACKGROUND, foreground=MSG_TITLE_FOREGROUND, font=font_normal)
         lbl_cam_cfg_title.pack(fill=X)
-        lbl_cam_cfg = Label(frm_sysinfo, textvariable=self.txt_var_cam_cfg, background=MSG_BACKGROUND, font=font_normal)
-        lbl_cam_cfg.pack(fill=X)
+        lbl_cam_cfg_page = Label(frm_sysinfo, textvariable=self.txt_var_cam_cfg_page, background=MSG_BACKGROUND, font=font_normal)
+        lbl_cam_cfg_page.pack(fill=X)
+        lbl_cam_cfg_stream = Label(frm_sysinfo, textvariable=self.txt_var_cam_cfg_stream, background=MSG_BACKGROUND, font=font_mono, justify=LEFT)
+        lbl_cam_cfg_stream.pack(fill=X)
 
         lbl_empty = Label(frm_sysinfo, text="", background=MSG_BACKGROUND, font=font_small)
         lbl_empty.pack(fill=X, expand=True)
@@ -172,12 +177,16 @@ class SysInfo(Frame):
         for i in range(0, MAX_CAM_AMOUNT):
             cam_config = cams_configs[i]
             address = cam_config.address
-            info = cam_config.info() if address else ''
+            port, type_name, auth, profiles = cam_config.cfg_info()
             status = cams_statuses[i]
-            cam_address = '- nie skonfigurowano -' if not address and status != CAM_STATUS_INIT else address
-            cam_status += 'Kamera %s: %s %s %s\n' % ((i + 1), cam_address, status, info)
+            cam_address = '- nie skonfigurowano -' if not address and status != CAM_STATUS_INIT else address.rjust(15, ' ')
+            if address:
+                cam_status += 'kam:%s %s poł:%s port:%s %s %s %s\n' % ((i + 1), cam_address, status, port, type_name.ljust(17, ' '), auth, profiles)
+            else:
+                cam_status += 'kam:%s %s %s\n' % ((i + 1), cam_address.rjust(15, ' '), status)
 
-        self.txt_var_cam_cfg.set((config_info + "\n\n%s") % cam_status.rstrip('\n'))
+        self.txt_var_cam_cfg_page.set("%s\n\n" % config_info)
+        self.txt_var_cam_cfg_stream.set("%s" % cam_status.rstrip('\n'))
         self.txt_var_version.set("Wersja: %s.%s" % (self.info_collector.cfg_version, self.info_collector.cfg_revision))
 
         log.debug("Labels updated.")
