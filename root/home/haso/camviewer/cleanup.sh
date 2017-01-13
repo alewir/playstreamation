@@ -19,9 +19,8 @@ rm -rfv start?.sh
 
 cp -v config_cam.cfg ../
 cp -v config_mon.cfg ../
+cp -v config_serial.cfg ../
 cp -v interfaces ../
 
 rm -rfv config_cam.cfg
-
-svn revert config_mon.cfg
-svn revert interfaces
+rm -rfv config_serial.cfg
