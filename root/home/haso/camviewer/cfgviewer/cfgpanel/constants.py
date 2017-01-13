@@ -65,9 +65,8 @@ REGEX_IP_ADDRESS = r'%s' % REGEX_IP_FORMAT
 REGEX_MON_ADDRESS = r'%s%s' % (KEYWORD_ADDRESS, REGEX_IP_FORMAT)
 REGEX_MON_NETMASK = r'%s%s' % (KEYWORD_NETMASK, REGEX_IP_FORMAT)
 
-CAM_STATUS_INIT = 'initialization...'  # Default value
+CAM_STATUS_INIT = '...inicjalizacja...'  # Default value
 CAM_STATUS_UNDEFINED = ''  # used when address IP is not defined for camera
-CAM_STATUS_OK = '(OK)'
-CAM_STATUS_NOT_CONNECTED = '(no connection)'
-CAM_STATUS_CON_ERROR = '(connection error)'
-
+CAM_STATUS_OK = 'TAK'
+CAM_STATUS_NOT_CONNECTED = 'NIE'
+CAM_STATUS_CON_ERROR = 'ERR'
