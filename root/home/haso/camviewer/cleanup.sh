@@ -14,7 +14,7 @@
 
 rm -rfv *.log
 rm -rfv *.log.*
-rm -rfv *.pyc
+find . -name "*.pyc" | xargs -n 1 rm -rfv
 rm -rfv start?.sh
 
 cp -v config_cam.cfg ../
